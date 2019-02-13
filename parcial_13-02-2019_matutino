@@ -1,0 +1,49 @@
+#!/bin/bash
+
+#Variaveis
+DATA=$(date +%d/%m/%Y)
+HORA=$(date +%H:%M)
+
+#Script
+clear
+
+#Informacoes de data
+echo "*** Relatorio do Sistema ***"
+echo -e "\tInformacoes do dia: $DATA"
+echo -e "\tHorario da execucao: $HORA"
+
+#Informacoes de Memoria RAM
+MEM_TOTAL=$(free -m | grep ^Mem | awk '{print $2}')
+MEM_USADO=$(free -m | grep ^Mem | awk '{print $3}')
+MEM_LIVRE=$(free -m | grep ^Mem | awk '{print $4}')
+MEM_CACHE=$(free -m | grep ^Mem | awk '{print $7}')
+
+echo
+echo -e "\tInformacoes de Memoria RAM:"
+echo -e "\t\tTotal: $MEM_TOTAL"
+echo -e "\t\tUsado: $MEM_USADO"
+echo -e "\t\tLivre: $(($MEM_LIVRE + $MEM_CACHE))"
+
+#Informacoes de Carga
+VALIDA_TEMPO_UP=$(uptime | grep min -c)
+
+if [ $VALIDA_TEMPO_UP -eq 1 ]
+then
+  CARGA=$(uptime | awk '{print $9}' | sed 's/,$//g')
+  CARGA_PORCENTAGEM=$(uptime | awk '{print $9}' | awk -F',' '{print $1}')
+else
+  CARGA=$(uptime | awk '{print $8}' | sed 's/,$//g')
+  CARGA_PORCENTAGEM=$(uptime | awk '{print $8}' | awk -F',' '{print $1}')
+fi
+
+echo
+echo -e "\tInformacoes de Carga:"
+if [ $CARGA_PORCENTAGEM -ne 0 ]
+then
+   echo -e "\t\tAtual: $CARGA *PREOCUPANTE!"
+else
+   echo -e "\t\tAtual: $CARGA"
+fi
+
+
+read
