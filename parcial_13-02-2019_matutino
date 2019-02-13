@@ -45,5 +45,23 @@ else
    echo -e "\t\tAtual: $CARGA"
 fi
 
+#Dados do HD
+echo
+echo "Informacoes do HD:"
+df -h | grep -v ^Sist | while read LINHA
+do
+  PARTICAO=$(echo $LINHA | awk '{print $6}')
+  PONTO_MONTAGEM=$(echo $LINHA | awk '{print $1}')
+  UTILIZACAO=$(echo $LINHA | awk '{print $5}')
+
+  echo -e "\t\tParticao: $PARTICAO"
+  echo -e "\t\t\tMontado em: $PONTO_MONTAGEM"
+  echo -e "\t\t\tUtilizacao: $UTILIZACAO\n\t\t\t-------"
+done
+
+
+
+
+
 
 read
