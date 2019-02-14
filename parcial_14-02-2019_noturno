@@ -19,3 +19,36 @@ echo "Estatisticas de Memoria RAM:"
 echo -e "\tTotal: $MEM_TOTAL"
 echo -e "\tUsado: $MEM_USADO"
 echo -e "\tLivre: $(($MEM_LIVRE + $MEM_CACHED))"
+
+echo
+CARGA=$(uptime | awk '{print $9}' | sed 's/,$//g')
+CARGA_CALCULAR=$(echo $CARGA | awk -F, '{print $1}')
+echo "Carga atual de processamento: $CARGA"
+
+if [ $CARGA_CALCULAR -ne 0 ]
+then
+        echo -e "\t* Critico "
+else
+        echo -e "\t* Nao critico"
+fi
+
+# HD
+
+
+echo
+echo "Estatisticas do HD:"
+
+df -h | grep -v ^Sist | while read LINHA
+do
+   PARTICAO=$(echo $LINHA | awk '{print $1}')
+   PONTO_MONTAGEM=$(echo $LINHA | awk '{print $6}')
+   UTILIZACAO=$(echo $LINHA | awk '{print $5}')
+
+   echo -e "\tParticao: $PARTICAO"
+   echo -e "\t\tPonto de montagem: $PONTO_MONTAGEM"
+   echo -e "\t\tUtilizacao: $UTILIZACAO"
+   echo -e "\t------------"
+
+done
+
+read
