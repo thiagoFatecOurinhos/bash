@@ -1,0 +1,21 @@
+#!/bin/bash
+
+clear
+
+DATA=$(date +%d/%m/%Y)
+HORA=$(date +%H:%M)
+
+echo "*** Relatorio do Sistema ***"
+echo "Data de execucao: $DATA"
+echo "Horario da execucao: $HORA"
+
+MEM_TOTAL=$(free -m | grep ^Mem: | awk '{print $2}')
+MEM_USADO=$(free -m | grep ^Mem: | awk '{print $3}')
+MEM_LIVRE=$(free -m | grep ^Mem: | awk '{print $4}')
+MEM_CACHED=$(free -m | grep ^Mem: | awk '{print $7}')
+
+echo
+echo "Estatisticas de Memoria RAM:"
+echo -e "\tTotal: $MEM_TOTAL"
+echo -e "\tUsado: $MEM_USADO"
+echo -e "\tLivre: $(($MEM_LIVRE + $MEM_CACHED))"
